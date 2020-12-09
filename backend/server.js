@@ -21,11 +21,12 @@ connection.once('open', () => {
 const employeesRouter = require('./routes/employees');
 const labEmployeesRouter = require('./routes/labEmployees');
 const employeeTestsRouter = require('./routes/employeeTests');
+const poolMapsRouter = require('./routes/poolMaps');
 
 app.use('/employees', employeesRouter);
 app.use('/labEmployees', labEmployeesRouter);
 app.use('/employeeTests', employeeTestsRouter);
-
+app.use('/poolMaps', poolMapsRouter);
 
 
 app.listen(port, () => {
