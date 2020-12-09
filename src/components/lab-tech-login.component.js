@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Redirect,Link } from "react-router-dom";
+
 
 export default class EmployeeLogin extends Component {
   constructor(props) {
@@ -52,8 +54,8 @@ export default class EmployeeLogin extends Component {
           this.setState({
             labEmployeeElement: this.state.labEmployeeArray[i]
           })
-         
-          window.location = '/labHome';
+          this.setState({ redirect: "/labHome" });
+          //window.location = '/labHome';
         }
       }
     }
@@ -100,6 +102,13 @@ export default class EmployeeLogin extends Component {
   }
   */
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={{pathname:this.state.redirect,
+        state: { labEmployeeElement: this.state.labEmployeeElement }
+      }} />
+     // <Link to={"/labHome/"+this.state.labEmployeeElement._id}/>
+    }
+
     return (
         <div>
             <h2>Employee Login page for Results</h2>

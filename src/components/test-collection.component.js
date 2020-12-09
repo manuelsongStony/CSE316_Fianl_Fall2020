@@ -43,6 +43,9 @@ export default class testCollection extends Component {
             .catch((error) => {
                 console.log(error);
             })
+
+            this.setState({ labEmployeeElement: this.props.location.state.labEmployeeElement})
+                //console.log("labEmployeeElement",this.props.location.state.labEmployeeElement);
     }
 
     deleteTest(id) {
@@ -73,14 +76,14 @@ export default class testCollection extends Component {
         })
       }
     
-      handleClick() {
+       handleClick() {
         //e.preventDefault();
     
         const employeeTest = {
             testBarcode: this.state.testBarcode,
             employeeID: this.state.employeeID,
             collectionTime: new Date(),
-            collectedBy: "manuelsong"
+            collectedBy: this.state.labEmployeeElement.labID
         }
     
         console.log(employeeTest);
@@ -95,13 +98,19 @@ export default class testCollection extends Component {
         })
 
 
-        axios.get('http://localhost:5000/employeeTests/')
+         axios.get('http://localhost:5000/employeeTests/')
             .then(response => {
                 this.setState({ testArray: response.data })
             })
             .catch((error) => {
                 console.log(error);
             })
+        
+            /*
+        this.setState({
+            testArray: this.state.testArray.push(employeeTest)
+        })
+        */
       }
 
     render() {
