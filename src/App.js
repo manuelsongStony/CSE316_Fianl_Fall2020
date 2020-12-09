@@ -3,21 +3,31 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route} from "react-router-dom";
 
 import Navbar from "./components/navbar.component"
-import ExercisesList from "./components/exercises-list.component";
-import EditExercise from "./components/edit-exercise.component";
-import CreateExercise from "./components/create-exercise.component";
-import CreateUser from "./components/create-user.component";
+
+import HomePage from "./components/home-page.component";
+import LabTechLogin from "./components/lab-tech-login.component";
+import EmployeeLogin from "./components/employee-login.component";
+
+import LabHome from "./components/lab-home.component";
+import testCollection from "./components/test-collection.component";
+import poolMapping from "./components/pool-mapping.component";
+import wellTesting from "./components/well-testing.component";
 
 function App() {
   return (
     <Router>
       <div className="container">
-      <Navbar />
+      <Navbar/>
       <br/>
-      <Route path="/" exact component={ExercisesList} />
-      <Route path="/edit/:id" component={EditExercise} />
-      <Route path="/create" component={CreateExercise} />
-      <Route path="/user" component={CreateUser} />
+      <Route path="/" exact component={HomePage} />
+      
+      <Route path="/labtech" component={LabTechLogin} />
+      <Route path="/employee" component={EmployeeLogin} />
+    
+      <Route path="/labHome" component={LabHome} />
+      <Route path="/testCollection" component={testCollection} />
+      <Route path="/poolMapping" component={poolMapping} />
+      <Route path="/wellTesting" component={wellTesting} />
       </div>
     </Router>
   );
