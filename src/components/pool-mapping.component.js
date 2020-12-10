@@ -3,37 +3,27 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-/*
+
 const Poolmap = props => (
     <tr>
         <td>{props.pool.poolBarcode}</td>
-        <td>{props.pool.testBarcode}</td>
         <td>
-            <Link to={"/edit/" + props.pool._id}>edit</Link> | <a href="#" onClick={() => { props.deletePool(props.pool._id) }}>delete</a>
+        {props.pool.testBarcodes.map((item,index) => {
+            if(index==props.pool.testBarcodes.length-1){
+                return item;
+            }else{
+          return item+", ";}
+        })}
+          
+        
+        </td>
+        <td>
+        <a href="#" onClick={() => { props.editPool(props.pool._id) }}>Edit</a> | <a href="#" onClick={() => { props.deletePool(props.pool._id) }}>Delete</a>
         </td>
     </tr>
 )
+//{props.pool.testBarcodes[0]}
 
-const TestBarcodeInput = props => (
-
-
-    <tr>
-        <td>Test barcode:</td>
-        <td>
-            <input
-                required
-                type="text"
-                name="Barcode"
-                value={props.testBarcode}
-                onChange={this.onChangetestBarcode}
-
-            />
-        </td>
-        <td>
-            <button onClick={this.handleDeleteRow}>delete</button>
-        </td>
-    </tr>
-)
 
 export default class poolMapping extends Component {
     constructor(props) {
@@ -45,15 +35,15 @@ export default class poolMapping extends Component {
             testBarcodeInputArray: [],
         };
 
-        this.handleClick = this.handleClick.bind(this);
+        
 
         this.deletePool = this.deletePool.bind(this);
+        this.editPool = this.editPool.bind(this);
+        
         this.onChangepoolBarcode = this.onChangepoolBarcode.bind(this);
         this.onChangetestBarcode = this.onChangetestBarcode.bind(this);
 
 
-        this.handleAddRow = this.handleAddRow.bind(this);
-        this.handleDeleteRow = this.handleDeleteRow.bind(this);
     }
 
 
@@ -72,7 +62,7 @@ export default class poolMapping extends Component {
             })
 
         this.setState({ labEmployeeElement: this.props.location.state.labEmployeeElement })
-        //console.log("labEmployeeElement",this.props.location.state.labEmployeeElement);
+        
     }
 
     deletePool(id) {
@@ -84,18 +74,31 @@ export default class poolMapping extends Component {
         })
     }
 
+    editPool(id) {
+        
+        
+        this.setState({
+           
+            poolBarcode:this.state.poolMapArray.filter(el => el._id == id)[0].poolBarcode,
+            testBarcodeInputArray:this.state.poolMapArray.filter(el => el._id == id)[0].testBarcodes
+        })
+        axios.delete('http://localhost:5000/poolMaps/' + id)
+            .then(response => { console.log(response.data) });
+
+        this.setState({
+            poolMapArray: this.state.poolMapArray.filter(el => el._id !== id)
+        })
+        }
+
+
     poolMapList() {
         return this.state.poolMapArray.map(currentPool => {
-            return <Poolmap pool={currentPool} deletePool={this.deletePool} key={currentPool._id} />;
+            return <Poolmap pool={currentPool} deletePool={this.deletePool} editPool ={this.editPool}
+            key={currentPool._id} />;
         })
     }
 
-    testBarcodeInputList() {
-        return this.state.testBarcodeInputArray.map(currentInput => {
-            return <TestBarcodeInput testBarcode={currentInput} handleDeleteRow={this.handleDeleteRow}
-                poolBarcode={this.state.poolBarcode} />;
-        })
-    }
+   
 
 
 
@@ -111,25 +114,46 @@ export default class poolMapping extends Component {
         })
     }
 
-    handleClick() {
-        //e.preventDefault();
 
-        const employeePool = {
-            testBarcode: this.state.testBarcode,
-            poolBarcode: this.state.poolBarcode
 
-        }
+    addTestBarcodeInput(){
+        this.setState({testBarcodeInputArray: [...this.state.testBarcodeInputArray,""]})
+    }
 
-        console.log(employeePool);
+    onChangetestBarcode(e,index){
+        this.state.testBarcodeInputArray[index]=e.target.value
+        this.setState({testBarcodeInputArray: this.state.testBarcodeInputArray})
+    }
 
-        axios.post('http://localhost:5000/poolMaps/add', employeePool)
-            .then(res => console.log(res.data));
+    handleRemove(index){
+        this.state.testBarcodeInputArray.splice(index,1)
 
-        this.setState({
-            testBarcode: '',
-            poolBarcode: ''
+        console.log(this.state.testBarcodeInputArray, "$$$$");
 
-        })
+        this.setState({testBarcodeInputArray: this.state.testBarcodeInputArray})
+    }
+    handleSubmit(e){
+        
+
+        
+            
+            
+            const poolMap = {
+                poolBarcode: this.state.poolBarcode,
+                testBarcodes: this.state.testBarcodeInputArray
+    
+            }
+    
+    
+            axios.post('http://localhost:5000/poolMaps/add', poolMap)
+                .then(res => console.log(res.data))
+            
+           
+
+
+        
+
+        
 
 
         axios.get('http://localhost:5000/poolMaps/')
@@ -141,16 +165,13 @@ export default class poolMapping extends Component {
             })
 
 
-    }
-
-
-
-    handleAddRow() {
-        this.setState({ testBarcodeInputArray: this.state.testBarcodeInputArray.push("111") })
-     
-    }
-    handleDeleteRow() {
-
+            this.setState({
+                
+                poolBarcode: '',
+                testBarcodeInputArray: []
+    
+            })
+      
     }
 
 
@@ -170,15 +191,28 @@ export default class poolMapping extends Component {
                     />
                     <br />
                     </p>
-                    <table className="table">
-                        <tbody>
-                            {this.testBarcodeInputList()}
-                        </tbody>
-                    </table>
+                    <label>Test barcodes:</label>
+                {
+                    this.state.testBarcodeInputArray.map((input,index)=>{
+                        return(
+                            <div key={index}>
+                                <input onChange={(e)=>this.onChangetestBarcode(e,index)} value={input}/>
+                            
+                                <button onClick={()=>this.handleRemove(index)}>delete</button>
+                            </div>
+                        )
+                    })
+                }
 
-                    <button onClick={this.handleAddRow}>Add more rows</button>
+                <hr />
+
+                <button onClick={(e)=>this.addTestBarcodeInput(e)}>Add more rows</button>
+
+                <hr />
+
+                <button onClick={(e)=>this.handleSubmit(e)}>Submit pool</button>
                 
-                <button onClick={this.handleClick}>Submit pool</button>
+              
 
                 <br />
                 <br />
@@ -202,74 +236,4 @@ export default class poolMapping extends Component {
         )
     }
 }
-*/
-export default class poolMapping extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            countries:[]
-        };
-
-        this.addCountry = this.addCountry.bind(this);
-
-      
-    }
-    
-
-    addCountry(){
-        this.setState({countries: [...this.state.countries,""]})
-    }
-
-    handleChange(e,index){
-        this.state.countries[index]=e.target.value
-        this.setState({countries: this.state.countries})
-    }
-
-    handleRemove(index){
-        this.state.countries.splice(index,1)
-
-        console.log(this.state.countries, "$$$$");
-
-        this.setState({countries: this.state.countries})
-    }
-    handleSubmit(e){
-        
-
-        console.log(this.state, "$$$$");
-
-      
-    }
-
-    render(){
-        return(
-            <div className="App">
-                <h1>The FORM</h1>
-                <label>Address</label>
-                {
-                    this.state.countries.map((country,index)=>{
-                        return(
-                            <div key={index}>
-                                <input onChange={(e)=>this.handleChange(e,index)} value={country}/>
-                            
-                                <button onClick={()=>this.handleRemove(index)}>Remove</button>
-                            </div>
-                        )
-                    })
-                }
-
-                <hr />
-
-                <button onClick={(e)=>this.addCountry(e)}>Add Country</button>
-
-                <hr />
-
-                <button onClick={(e)=>this.handleSubmit(e)}>Submit</button>
-
-            </div>
-        );
-
-    }
-
-
-}

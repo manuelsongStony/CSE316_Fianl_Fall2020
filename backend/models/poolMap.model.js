@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const poolMapSchema = new Schema({
-  testBarcode: { type: String, required: true },
-  poolBarcode: { type: String, required: true }
-
+  
+  poolBarcode: { type: String, required: true },
+  testBarcodes:  [{type: String}]
 });
 
 const PoolMap = mongoose.model('PoolMap', poolMapSchema);

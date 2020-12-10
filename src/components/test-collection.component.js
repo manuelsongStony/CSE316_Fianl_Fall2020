@@ -5,8 +5,8 @@ import axios from 'axios';
 
 const Test = props => (
     <tr>
-        <td>{props.test.testBarcode}</td>
         <td>{props.test.employeeID}</td>
+        <td>{props.test.testBarcode}</td>
         <td>
             <Link to={"/edit/" + props.test._id}>edit</Link> | <a href="#" onClick={() => { props.deleteTest(props.test._id) }}>delete</a>
         </td>
@@ -43,7 +43,7 @@ export default class testCollection extends Component {
             .catch((error) => {
                 console.log(error);
             })
-
+            
             this.setState({ labEmployeeElement: this.props.location.state.labEmployeeElement})
                 //console.log("labEmployeeElement",this.props.location.state.labEmployeeElement);
     }

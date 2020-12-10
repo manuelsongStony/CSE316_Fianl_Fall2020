@@ -8,16 +8,16 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-    const testBarcode = req.body.testBarcode;
-    const poolBarcode = req.body.poolBarcode;
     
+    const poolBarcode = req.body.poolBarcode;
+    const testBarcodes = req.body.testBarcodes;
    
 
 
   
     const newPoolMap = new PoolMap({
-        testBarcode,
-        poolBarcode
+        poolBarcode,
+        testBarcodes
         
     });
   
@@ -43,9 +43,9 @@ router.route('/add').post((req, res) => {
   router.route('/update/:id').post((req, res) => {
     PoolMap.findById(req.params.id)
       .then(poolMap => {
-        poolMap.testBarcode = req.body.testBarcode;
+        
         poolMap.poolBarcode = req.body.poolBarcode;
-   
+        poolMap.testBarcodes = req.body.testBarcodes;
   
         poolMap.save()
           .then(() => res.json('PoolMap updated!'))

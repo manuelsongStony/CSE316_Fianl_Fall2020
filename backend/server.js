@@ -22,12 +22,14 @@ const employeesRouter = require('./routes/employees');
 const labEmployeesRouter = require('./routes/labEmployees');
 const employeeTestsRouter = require('./routes/employeeTests');
 const poolMapsRouter = require('./routes/poolMaps');
+const wellTestingsRouter = require('./routes/wellTestings');
+
 
 app.use('/employees', employeesRouter);
 app.use('/labEmployees', labEmployeesRouter);
 app.use('/employeeTests', employeeTestsRouter);
 app.use('/poolMaps', poolMapsRouter);
-
+app.use('/wellTestings', wellTestingsRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

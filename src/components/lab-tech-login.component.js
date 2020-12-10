@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
 
-export default class EmployeeLogin extends Component {
+export default class LabTechLogin extends Component {
   constructor(props) {
     super(props);
 
@@ -111,7 +111,7 @@ export default class EmployeeLogin extends Component {
 
     return (
         <div>
-            <h2>Employee Login page for Results</h2>
+            <h2>lab Login page</h2>
             <p>
                 Lab ID:
                 <input
@@ -122,7 +122,7 @@ export default class EmployeeLogin extends Component {
                     onChange={this.onChangelabID}
                 />
                 <br />
-                Test barcode:
+                Password:
                 <input
                     required
                     type="text"
