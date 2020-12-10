@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
 
@@ -9,8 +9,8 @@ const WellTest = props => (
     <td>{props.wellTest.poolBarcode}</td>
     <td>{props.wellTest.result}</td>
     <td>
-    <a href="#" onClick={() => { props.editTest(props.wellTest._id) }}>Edit</a> |
-            <a href="#" onClick={() => { props.deleteTest(props.wellTest._id) }}>Delete</a>
+    <button onClick={() => { props.editTest(props.wellTest._id) }}>Edit</button> |
+            <button onClick={() => { props.deleteTest(props.wellTest._id) }}>Delete</button>
     </td>
   </tr>
 )
@@ -68,9 +68,9 @@ export default class wellTesting extends Component {
         
     this.setState({
        
-      wellBarcode:this.state.wellTestArray.filter(el => el._id == id)[0].wellBarcode,
-      poolBarcode:this.state.wellTestArray.filter(el => el._id == id)[0].poolBarcode,
-      result:this.state.wellTestArray.filter(el => el._id == id)[0].result
+      wellBarcode:this.state.wellTestArray.filter(el => el._id === id)[0].wellBarcode,
+      poolBarcode:this.state.wellTestArray.filter(el => el._id === id)[0].poolBarcode,
+      result:this.state.wellTestArray.filter(el => el._id === id)[0].result
     })
     axios.delete('http://localhost:5000/wellTestings/' + id)
         .then(response => { console.log(response.data) });
@@ -116,7 +116,7 @@ export default class wellTesting extends Component {
       result: this.state.result,
     }
 
-    console.log(wellTest);
+    //console.log(wellTest);
 
     axios.post('http://localhost:5000/wellTestings/add', wellTest)
       .then(res => console.log(res.data));

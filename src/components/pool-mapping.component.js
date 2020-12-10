@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
 
@@ -9,7 +9,7 @@ const Poolmap = props => (
         <td>{props.pool.poolBarcode}</td>
         <td>
         {props.pool.testBarcodes.map((item,index) => {
-            if(index==props.pool.testBarcodes.length-1){
+            if(index===props.pool.testBarcodes.length-1){
                 return item;
             }else{
           return item+", ";}
@@ -18,7 +18,7 @@ const Poolmap = props => (
         
         </td>
         <td>
-        <a href="#" onClick={() => { props.editPool(props.pool._id) }}>Edit</a> | <a href="#" onClick={() => { props.deletePool(props.pool._id) }}>Delete</a>
+        <button onClick={() => { props.editPool(props.pool._id) }}>Edit</button> | <button onClick={() => { props.deletePool(props.pool._id) }}>Delete</button>
         </td>
     </tr>
 )
@@ -79,8 +79,8 @@ export default class poolMapping extends Component {
         
         this.setState({
            
-            poolBarcode:this.state.poolMapArray.filter(el => el._id == id)[0].poolBarcode,
-            testBarcodeInputArray:this.state.poolMapArray.filter(el => el._id == id)[0].testBarcodes
+            poolBarcode:this.state.poolMapArray.filter(el => el._id === id)[0].poolBarcode,
+            testBarcodeInputArray:this.state.poolMapArray.filter(el => el._id === id)[0].testBarcodes
         })
         axios.delete('http://localhost:5000/poolMaps/' + id)
             .then(response => { console.log(response.data) });
@@ -108,11 +108,7 @@ export default class poolMapping extends Component {
         })
     }
 
-    onChangetestBarcode(e) {
-        this.setState({
-            testBarcode: e.target.value
-        })
-    }
+    
 
 
 

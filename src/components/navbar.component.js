@@ -11,10 +11,10 @@ export default class Navbar extends Component {
         <ul className="navbar-nav mr-auto">
          
           <li className="navbar-item">
-          <Link to="/labtech" className="nav-link">labtech</Link>
+          <Link to="/labtech" className="nav-link">LabLogin</Link>
           </li>
           <li className="navbar-item">
-          <Link to="/employee" className="nav-link">employee</Link>
+          <Link to="/employee" className="nav-link">EmployeeLogin</Link>
           </li>
         </ul>
         </div>

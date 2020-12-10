@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
 
@@ -8,7 +8,8 @@ const Test = props => (
         <td>{props.test.employeeID}</td>
         <td>{props.test.testBarcode}</td>
         <td>
-            <Link to={"/edit/" + props.test._id}>edit</Link> | <a href="#" onClick={() => { props.deleteTest(props.test._id) }}>delete</a>
+            <button onClick={() => { props.deleteTest(props.test._id) }}>delete</button>
+            
         </td>
     </tr>
 )

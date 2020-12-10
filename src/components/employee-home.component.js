@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Redirect } from "react-router-dom";
+
 
 
 
@@ -115,8 +115,8 @@ export default class employeeHome extends Component {
        pArray.filter(
         el => el.testBarcodes.includes(element.testBarcode))
         */
-       console.log(wArray)
-       console.log(pArray)
+       //console.log(wArray)
+       //console.log(pArray)
        
         if(pArray!==undefined){
             if(wArray!==undefined){
@@ -134,11 +134,14 @@ export default class employeeHome extends Component {
                          let pArray =this.state.poolMapArray;
                          let wArray =this.state.wellTestArray;
 
+                         //console.log(pArray)
+                         
                          element.collectedBy="Not start yet"
 
                           if(pArray.filter(
                             PAel => PAel.testBarcodes.includes(element.testBarcode))[0]!==undefined){
 
+                               
                             element.collectedBy="team"
 
                             if(wArray.filter( //collectedBy=result
@@ -152,6 +155,7 @@ export default class employeeHome extends Component {
 
                           }
 
+                          
 
                     });
                     
